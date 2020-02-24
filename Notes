@@ -1,0 +1,18 @@
+//Notes - Added chronologially 'Latest Last'.  "All MoMs"
+//Notes - Date recorded
+//Notes - Editable
+
+----------------------------// Feb - 24 - 2020 // -------------------------------
+
+Problems
+
+1. Should the 'FTV' variable be considered continuous or categorical //should be considered continuous - Still open for discussion
+
+2. We need to consider the difference between association, interaction - Find interaction and test for association
+
+3. Supporting literature 
+
+-Difference between interaction and association - https://stats.stackexchange.com/questions/284798/interaction-vs-association
+-Git Lab - https://php-1511-2511.github.io/labs/lab5.html
+-Lab Instrutions, university of Alberta - http://www.stat.ualberta.ca/statslabs/stat337/files/ins5.pdf
+-URL for the book - https://books.google.be/books?id=Po0RLQ7USIMC&pg=PA35&lpg=PA35
