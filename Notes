@@ -3,6 +3,22 @@
 //Notes - Editable
 
 ----------------------------// Feb - 24 - 2020 // -------------------------------
+Initial Intuitions:
+
+-Look at literature to further understand which covariates might be important, which are good candidates for interaction terms. 
+  - Note: the assignment does confirm that "variables identified in the code sheet given in the table have been shown to be associated
+with low birth weight in the obstetrical literature.". It is our task to determine which are significant in THIS population/dataset...
+  
+- Is FTV categorical or continuous?????? 
+ 
+- Consider running chi-square/anova and/or correlation tests to see which variables/interaction terms are most likely to be part of the best model
+  - This might help narrow down the list of potential models we would want to explore (2^4 possible models with just main effects.. even more with interactions included)
+
+-‘Physician visits’ might be a good candidate for interaction term
+  - i.e. for age: reason to believe that within certain age groups (i.e. very young or very old), more physician visits would be more beneficial
+
+- Use graphs for visualization purposes and to support our decisions
+
 
 Problems
 
@@ -10,7 +26,9 @@ Problems
 
 2. We need to consider the difference between association, interaction - Find interaction and test for association
 
-3. Supporting literature 
+3. How do we determine which models to assess and compare? 
+
+4. Supporting literature 
 
 -Difference between interaction and association - https://stats.stackexchange.com/questions/284798/interaction-vs-association
 -Git Lab - https://php-1511-2511.github.io/labs/lab5.html
