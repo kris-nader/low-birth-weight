@@ -23,5 +23,7 @@ summary(glm(LOW ~ AGE + LWT +FTV + AGE*FTV ,
 #Residual deviance: 215.37
 #these are all significant 
 
-##technically residual deviance is going up as we remove terms - we can test using AIC to see that removing these terms does improve the model 
+##technically residual deviance is going up as we remove terms (which is expected because this will inevitably happen as we remove variables)
+   ## we can test using AIC to see that removing these terms does actually improve the model though
+
 ##BUT how is this different from the backwards selection we have to do in part 2 of analysis 1?
