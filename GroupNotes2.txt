@@ -1,0 +1,16 @@
+Recap:
+Kristen: Backwards selection using AIC, code included in repo, correlation between AGE & FTV
+
+2 Models:
+- Ran on all predictors: AIC = 0.67
+- All predictors except BWT: AIC = 0.83
+
+* Predicted using backwards selection; doesn't consider adding the predictor back once it has been removed
+
+Solution: Let's try brute force, BUT using intuition
+
+AGE/FTV: shown that this actually interacts
+LWT/FTV: ?
+PTL/UI: 
+
+

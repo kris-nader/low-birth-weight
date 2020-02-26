@@ -30,3 +30,11 @@ summary(birth.ht)
 # - Use more parameters in model building
 # - eliminate predictors based on p-values
 
+# Interaction testing
+# AGE/FTV
+# LWT/FTV?
+# SMOKE/RACE
+# AGE/SMOKE
+
+
+
