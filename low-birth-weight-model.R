@@ -38,10 +38,10 @@ missmap(lowbwt.df, col=c("green", "pink"), legend=FALSE)
 
 
 library(corrplot)
-# orrelation matrix plot to given an idea of which variables change together
+# Correlation matrix plot to given an idea of which variables change together
 correlations <- cor(lowbwt.df)
 
-corrplot(correlations, method="shade")
+corrplot(correlations, method="number")
 
 # explanation of data
 library(DataExplorer)
@@ -49,10 +49,11 @@ plot_str(lowbwt.df)
 
 plot(lowbwt.df$AGE)
 summary(lowbwt.df$AGE)
+# 45 y/o outlier?
 
 
 # Using the 1st 4 variables
-m0<-glm(LOW~RACE+SMOKE,data=lowbwt.rdf,family=binomial(link="logit"))
+m0<-glm(formula= LOW ~ RACE+SMOKE,data=lowbwt.df,family=binomial(link="logit"))
 summary(m0)
 
 library(AICcmodavg)
@@ -83,20 +84,21 @@ lowbwt.aictab<-aictab(cand.set=lowbwt.list,modnames=lowbwt.modnames)
 lowbwt.aictab
 
 # using 4 predictors, get all interactions and do a backward selection
-plot_str(lowbwt.subset)
 
-lowbwt.subset<-cbind(lowbwt.rdf$LOW,lowbwt.rdf$AGE,lowbwt.rdf$RACE,lowbwt.rdf$FTV,lowbwt.rdf$LWT )
+lowbwt.subset<-cbind(lowbwt.df$LOW,lowbwt.df$AGE,lowbwt.df$RACE,lowbwt.df$FTV,lowbwt.df$LWT)
 colnames(lowbwt.subset)=c("LOW","AGE","RACE","FTV","LWT")
 fix(lowbwt.subset)
 lowbwt.subset=as.data.frame(lowbwt.subset)
 sapply(lowbwt.subset,class)
+
+plot_str(lowbwt.subset)
 
 correlations_sub <- cor(lowbwt.subset)
 corrplot(correlations_sub, method="number")
 
 lowbwt.subset$RACE=as.factor(lowbwt.subset$RACE)
 
-fit.subset <- glm( LOW ~ .^2, data=lowbwt.subset,family=binomial(link="logit"))
+fit.subset <- glm(LOW~.^2, data=lowbwt.subset,family=binomial(link="logit"))
 summary(fit.subset)
 
 lowbwt.fit.subset.backward <- step(fit.subset, direction="backward")
@@ -116,13 +118,13 @@ perf_auc
 
 # making a full model
 
-lowbwt_f<-glm(LOW~.,data=lowbwt.rdf,family=binomial(link="logit"))
+lowbwt_f<-glm(LOW~.,data=lowbwt.df,family=binomial(link="logit"))
 summary(lowbwt_f)
 
 # all possible 2 way interactions for the full model
 
 
-fit <- glm( LOW ~ .^2, data=lowbwt.rdf,family=binomial(link="logit"))
+fit <- glm( LOW ~ .^2, data=lowbwt.df,family=binomial(link="logit"))
 summary(fit)
 
 # use backward selection
