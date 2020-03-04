@@ -34,3 +34,27 @@ Problems
 -Git Lab - https://php-1511-2511.github.io/labs/lab5.html
 -Lab Instrutions, university of Alberta - http://www.stat.ualberta.ca/statslabs/stat337/files/ins5.pdf
 -URL for the book - https://books.google.be/books?id=Po0RLQ7USIMC&pg=PA35&lpg=PA35
+
+
+
+----------------------------// Mar - 4 - 2020 // ------------------------------
+
+HT - looks like it has an effect on BWT but we don't have a lot of datapoints for patient's with HT 
+FTV - likewise... we have less data points for higher FTVs so we should maybe consider grouping these together into one term. 
+RACE - in the 'full model' Race3 is not significant but Race2 is so we might want to consider grouping Race2 and Race3 together. 
+
+p-values for correlation - need to fully understand what it means. 
+
+GRAPH SELECTION 
+- correlation graph - include if we understand p-values
+- LOW VS. AGE boxplot - include!! (remove scatter plot because it doesn't add anything) 
+- BWT VS. HT boxplot - note the difference in data points but also does look significant (include in model...) 
+- ignore PTL and FTV because we are including them in the interactions 
+- include RACE 
+- UIIIIIIIIIIII STRONG CANDIDATE - include this graph 
+- include smoke graph 
+- age and ftv - include 
+- age and smoke - smoothed graph 
+- i missed some here..
+- ptl and UI k (don't know what i was going to write here... sorry...)
+
