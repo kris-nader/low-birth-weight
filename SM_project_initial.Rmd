@@ -256,15 +256,17 @@ for( i in 1:2)
               axis.text.y = element_text(colour="black", size = 9),
               axis.line = element_line(size=0.5, colour = "black")) +facet_wrap(~FTV)+geom_jitter()
  #  ggsave("LwtFtv.png", plot = plotVar)
-   
-ggplot(LOW, aes(LWT, BWT)) + 
-  geom_point(aes(colour=LOW)) +
-  geom_smooth(method="lm")
+ 
+#LWT vs BWT scatterplot 
+#ggplot(LOW, aes(LWT, BWT)) + 
+ # geom_point(aes(colour=LOW)) +
+  #geom_smooth(method="lm")
 #ggsave("LWT_cont.png")
 
-ggplot(LOW, aes(AGE, BWT)) + 
-  geom_point(aes(colour=LOW)) +
-  geom_smooth(method="lm")
+#AGE vs BWT scatterplot 
+#ggplot(LOW, aes(AGE, BWT)) + 
+ # geom_point(aes(colour=LOW)) +
+  #geom_smooth(method="lm")
 #ggsave("AGE_cont.png")
 
 
@@ -314,23 +316,35 @@ summary(model5)
 half_mod=glm(LOW~AGE+RACE+FTV+LWT+AGE:FTV+LWT:FTV, data=LOW, family=binomial(link="logit"))
 
 #using stepwise selection using AIC
-#step.model <- step(half_mod, direction = "both")
+step.model <- step(half_mod, direction = "both")
 
 #exp(half_mod$coefficients)
 
 #exp(confint(low_mod)) #categorical variables!!
 
 low.list=list()
+
+#four full
 low.list[[1]]=glm(LOW~AGE+RACE+FTV+LWT, data=LOW, family=binomial(link="logit"))
+
+#all full_interaction
 low.list[[2]]=glm(LOW~AGE+RACE+FTV+LWT+AGE:FTV+LWT:FTV, data=LOW, family=binomial(link="logit"))
+
+#inter1 full_AgeFtv
 low.list[[3]]=glm(LOW~AGE+RACE+FTV+LWT+AGE:FTV, data=LOW, family=binomial(link="logit"))
+
+#inter2 full_LwtFtv
 low.list[[4]]=glm(LOW~AGE+RACE+FTV+LWT+LWT:FTV, data=LOW, family=binomial(link="logit"))
+
+#race noRACE
 low.list[[5]]=glm(LOW~AGE*FTV+LWT, data=LOW, family=binomial(link="logit"))
+
+#lwt noLWT
 low.list[[6]]=glm(LOW~AGE*FTV+RACE, data=LOW, family=binomial(link="logit"))
-low.list[[7]]=glm(LOW~AGE*FTV, data=LOW, family=binomial(link="logit"))
 
 
-low.modnames=c("four", "all", "inter1", "inter2", "race", "lwt", "AF")
+
+low.modnames=c("full", "full_interaction", "full_AgeFtv", "full_LwtFtv", "noRACE", "noLWT")
 
 low.aictab=aictab(cand.set = low.list,modnames = low.modnames)
 low.aictab
@@ -344,53 +358,108 @@ summary(full.model)
 #using stepwise selection using AIC
 step.model <- step(full.model, direction = "both")
 
-#exp(half_mod$coefficients)
 
-#exp(confint(low_mod)) #categorical variables!!
+low.list.full=list()
 
-low.list=list()
-low.list[[1]]=glm(LOW~AGE+RACE+FTV+LWT, data=LOW, family=binomial(link="logit"))
-low.list[[2]]=glm(LOW~AGE+RACE+FTV+LWT+AGE:FTV+LWT:FTV, data=LOW, family=binomial(link="logit"))
-low.list[[3]]=glm(LOW~AGE+RACE+FTV+LWT+AGE:FTV, data=LOW, family=binomial(link="logit"))
-low.list[[4]]=glm(LOW~AGE+RACE+FTV+LWT+LWT:FTV, data=LOW, family=binomial(link="logit"))
-low.list[[5]]=glm(LOW~AGE*FTV+LWT, data=LOW, family=binomial(link="logit"))
-low.list[[6]]=glm(LOW~AGE*FTV+RACE, data=LOW, family=binomial(link="logit"))
-low.list[[7]]=glm(LOW~AGE*FTV, data=LOW, family=binomial(link="logit"))
+#full
+low.list.full[[1]]=glm(LOW~AGE+FTV+PTL+LWT+UI+HT+SMOKE+RACE, data=LOW, family=binomial(link="logit"))
+
+#full_interaction
+low.list.full[[2]]=glm(LOW~AGE+FTV+PTL+LWT+UI+HT+SMOKE+RACE+AGE:FTV+FTV:LWT+SMOKE:RACE+AGE:SMOKE+PTL:UI+HT:LWT, data=LOW, family=binomial(link="logit"))
+
+#full_inter1 full_AgeFtv
+low.list.full[[3]]=glm(LOW~AGE+FTV+PTL+LWT+UI+HT+SMOKE+RACE+AGE:FTV, data=LOW, family=binomial(link="logit"))
+
+#full_inter2 full_FtvLwt
+low.list.full[[4]]=glm(LOW~AGE+FTV+PTL+LWT+UI+HT+SMOKE+RACE+AGE:FTV+FTV:LWT, data=LOW, family=binomial(link="logit"))
+
+#full_inter3 full_SmokeRace
+low.list.full[[5]]=glm(LOW~AGE+FTV+PTL+LWT+UI+HT+SMOKE+RACE+AGE:FTV+SMOKE:RACE, data=LOW, family=binomial(link="logit"))
+
+#full_inter4 full_AgeSmoke
+low.list.full[[6]]=glm(LOW~AGE+FTV+PTL+LWT+UI+HT+SMOKE+RACE+AGE:FTV+AGE:SMOKE, data=LOW, family=binomial(link="logit"))
+
+#full_inter5 full_PtlUi
+low.list.full[[7]]=glm(LOW~AGE+FTV+PTL+LWT+UI+HT+SMOKE+RACE+AGE:FTV+PTL:UI, data=LOW, family=binomial(link="logit"))
+
+#full_inter6 full_HtLwt
+low.list.full[[8]]=glm(LOW~AGE+FTV+PTL+LWT+UI+HT+SMOKE+RACE+AGE:FTV+HT:LWT, data=LOW, family=binomial(link="logit"))
+
+#noAGEFTV 
+low.list.full[[9]]=glm(LOW~AGE+FTV+PTL+LWT+UI+HT+SMOKE+RACE+PTL:UI, data=LOW, family=binomial(link="logit"))
+
+#noRACE
+low.list.full[[10]]=glm(LOW~AGE+FTV+PTL+LWT+UI+HT+SMOKE+PTL:UI+AGE:FTV, data=LOW, family=binomial(link="logit"))
+
+#noSmokeRACE
+low.list.full[[11]]=glm(LOW~AGE+FTV+PTL+LWT+UI+HT+PTL:UI+AGE:FTV, data=LOW, family=binomial(link="logit"))
+
+#noAGE
+low.list.full[[12]]=glm(LOW~FTV+PTL+LWT+UI+HT+SMOKE+RACE+PTL:UI, data=LOW, family=binomial(link="logit"))
+
+#noUiHt
+low.list.full[[13]]=glm(LOW~AGE+FTV+LWT+SMOKE+RACE+PTL+AGE:FTV, data=LOW, family=binomial(link="logit"))
 
 
-low.modnames=c("four", "all", "inter1", "inter2", "race", "lwt", "AF")
 
-low.aictab=aictab(cand.set = low.list,modnames = low.modnames)
-low.aictab
+
+low.modnames.full=c("full", "full_interaction", "full_AgeFtv", "full_FtvLwt", "full_SmokeRace", "full_AgeSmoke", "full_PtlUi", "full_HtLwt", "noAGEFTV", "noRACE", "noSmokeRACE", "noAGE", "noUiHt")
+
+low.aictab.full=aictab(cand.set = low.list.full,modnames = low.modnames.full)
+low.aictab.full
 ```
 
 ```{r Testing  interactions}
 
 ##interaction model
+#Test all interactions for the4 variables model
 low_mod=glm(LOW~(AGE+RACE+FTV+LWT)^2, data=LOW, family=binomial(link="logit"))
 summary(low_mod)
 ####
-low_modALL=glm(LOW~AGE+FTV++HT+UI+PTL+RACE*SMOKE+LWT, data=LOW,family=binomial(link="logit"))
-summary(low_modALL)
+
+
 #AGE and FTV logic because maybe as you get older you need more checkups (or if smaller)
-low_modINT=glm(LOW~FTV*AGE+RACE+HT+UI+LWT+SMOKE+PTL, data=LOW, family=binomial(link="logit"))
-summary(low_modINT)
-#MAYBE XX
-low_modMAY=glm(LOW~FTV+AGE*HT+LWT+SMOKE+RACE+UI+PTL, data=LOW, family=binomial(link="logit"))
-summary(low_modMAY)
+
 #Maybe SMOKE interacts with premature labor: risk factor for PTL. So maybe som1 who smokes and PTL different risk for LOW
 #https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0146241
-#DO UI and PTL
-low_modPTL=glm(LOW~FTV+RACE+AGE+LWT+SMOKE*PTL+UI+HT, data=LOW, family=binomial(link="logit"))
-summary(low_modPTL)
-#AGE and PTL
-low_modPA=glm(LOW~FTV+RACE+PTL*AGE+LWT+HT+SMOKE+UI, data=LOW, family=binomial(link="logit"))
-summary(low_modPA)
+
 #RACE and AGE
 #https://mhnpjournal.biomedcentral.com/articles/10.1186/s40748-018-0084-2
 
-#step.model <- step(full.model, direction = "both", test="LRT")
+
 
 ```
 
+#Try to merge groups 2 and 3 in RACE
+```{r regroup}
+#Replace 3 with 2 in RACE
+LOW$RACE[which(LOW$RACE=="3")]="2"
+
+#To drop level 3
+LOW=droplevels(LOW)
+
+#Model with 4 variables
+#half_mod=glm(LOW~AGE+RACE+FTV+LWT+AGE:FTV+LWT:FTV, data=LOW, family=binomial(link="logit"))
+#summary(half_mod)
+#Not significant race
+
+#Model with all variables
+full=glm(LOW ~ AGE+FTV+PTL+LWT+UI+HT+SMOKE+RACE+AGE:FTV+FTV:LWT+SMOKE:RACE+AGE:SMOKE+PTL:UI, data=LOW, family=binomial(link="logit"))
+summary(full)
+
+#without SMOKE:RACE
+noSmokeRace=glm(LOW ~ AGE+FTV+PTL+LWT+UI+HT+SMOKE+RACE+AGE:FTV+FTV:LWT+AGE:SMOKE+PTL:UI, data=LOW, family=binomial(link="logit"))
+summary(noSmokeRace)
+
+#without AGE:SMOKE
+noAgeSmoke=glm(LOW ~ AGE+FTV+PTL+LWT+UI+HT+SMOKE+RACE+AGE:FTV+FTV:LWT+PTL:UI, data=LOW, family=binomial(link="logit"))
+summary(noAgeSmoke)
+
+#without FTV:LWT
+noFtvLwt=glm(LOW ~ AGE+FTV+PTL+LWT+UI+HT+SMOKE+RACE+AGE:FTV+PTL:UI, data=LOW, family=binomial(link="logit"))
+summary(noFtvLwt)
+
+#RACE 2 SIGNIFICANT
+
+```
 
