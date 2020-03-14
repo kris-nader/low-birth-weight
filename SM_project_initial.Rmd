@@ -48,6 +48,32 @@ LOW$LOW=as.factor(LOW$LOW)
 ggplot(data = LOW, aes(x=LOW)) + geom_bar(mapping = aes(x = LOW, fill=factor(LOW))) +ylim(0,150)+scale_fill_brewer(palette="Paired") + geom_text(stat='count', aes(label=..count..), vjust=-1)+labs(fill = "LOW")
 
 
+##Correlation between continuous variables and BWT
+chart.Correlation(subset(lowbwt,select=c("BWT","AGE","LWT","FTV", "PTL")),
+                  histogram=TRUE, pch=19, method = "spearman")
+
+p_age <- cor.test(lowbwt$BWT, lowbwt$AGE, method="spearman")$p.value
+p_lwt <- cor.test(lowbwt$BWT, lowbwt$LWT, method="spearman")$p.value
+p_ftv <- cor.test(lowbwt$BWT, lowbwt$FTV, method="spearman")$p.value
+p_ptl <- cor.test(lowbwt$BWT, lowbwt$PTL, method="spearman")$p.value
+
+
+rho_age <- cor.test(lowbwt$BWT, lowbwt$AGE, method="spearman")$estimate
+rho_lwt <- cor.test(lowbwt$BWT, lowbwt$LWT, method="spearman")$estimate
+rho_ftv <- cor.test(lowbwt$BWT, lowbwt$FTV, method="spearman")$estimate
+rho_ptl <- cor.test(lowbwt$BWT, lowbwt$PTL, method="spearman")$estimate
+
+correlations.df <- data.frame(c(rho_age, rho_lwt, rho_ftv, rho_ptl), 
+                              c(p_age, p_lwt, p_ftv, p_ptl), 
+                              row.names=c("AGE", "LWT", "FTV", "PTL"))
+round(2)
+colnames(correlations.df) <- c("rho", "p")
+correlations.df
+
+
+####
+                 
+                 
 fill <- "#4271AE"
 lines <- "#1F3552"
 
@@ -118,6 +144,51 @@ for( i in 1:2)
               axis.line = element_line(size=0.5, colour = "black"))
 
     plots.list2[[i]]=plotVar+geom_jitter()
+    
+#interaction between age and smoke
+ggplot(lowbwt, aes(AGE,BWT, color=as.factor(SMOKE))) + 
+  geom_point() + 
+  geom_smooth(se=F, size=1.7) +
+  ggtitle("Distribution for BWT by Age \n for Smokers and Non-Smokers" ) +
+  theme_bw() +
+  labs(color='SMOKE') +
+  scale_color_manual(values=c("#74a9cf", "#045a8d"))+
+  theme(panel.grid.major = element_line(colour = "#d3d3d3"),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank(),
+        plot.title = element_text(size = 12, family = "Tahoma", face = "bold", hjust=0.5),
+        text=element_text(family = "Tahoma"),
+        axis.title = element_text(face="bold"),
+        legend.title = element_text(face="bold"),
+        axis.text.x = element_text(colour="black", size = 11),
+        axis.text.y = element_text(colour="black", size = 9),
+        axis.line = element_line(size=0.5, colour = "black")) 
+
+
+####
+
+
+#interaction between PTL and UI
+interaction.plot(lowbwt$UI, lowbwt$PTL, lowbwt$BWT, 
+                 col = c( "#bdc9e1", "#74a9cf", "#2b8cbe", "#045a8d"), lty = 1, lwd = 3,
+                 main = "Distribution For BWT By UI Status \n For Each PTL Count",
+                 xlab = "UI", ylab ="Mean BWT", trace.label = "PTL",
+                 cex.lab = 1.2, 
+                 cex.main = 1, 
+                 font.main=2,
+                 fixed=T, 
+                 xpd = FALSE)
+
+#interaction between RACE and SMOKE 
+interaction.plot(lowbwt$RACE, lowbwt$SMOKE, lowbwt$BWT, 
+                 col = c("#74a9cf", "#045a8d"), lty = 1, lwd = 3,
+                 main = "Distribution For BWT By Age \n For Smokers and Non-Smokers",
+                 xlab = "RACE", ylab = "Mean BWT", trace.label = "SMOKE",
+                 cex.lab = 1.2, cex.main=1,
+                 font.main=2,
+                 fixed=T, 
+                 xpd=FALSE)
   
 #  ggsave(paste0(varName, ".png"), plot = plots.list2[[i]])
   
@@ -257,6 +328,8 @@ for( i in 1:2)
               axis.line = element_line(size=0.5, colour = "black")) +facet_wrap(~FTV)+geom_jitter()
  #  ggsave("LwtFtv.png", plot = plotVar)
  
+ 
+ 
 #LWT vs BWT scatterplot 
 #ggplot(LOW, aes(LWT, BWT)) + 
  # geom_point(aes(colour=LOW)) +
@@ -268,7 +341,6 @@ for( i in 1:2)
  # geom_point(aes(colour=LOW)) +
   #geom_smooth(method="lm")
 #ggsave("AGE_cont.png")
-
 
 
 ```
