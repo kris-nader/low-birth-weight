@@ -334,17 +334,12 @@ data_cat=subset(lowbwt, select=c( &quot;UI&quot;, &quot;HT&quot;, &quot;RACE&quo
     plots.list[[i]]=plotVar+geom_jitter()
     
     #Save boxplots as png 
-    ggsave(paste0(varName, &quot;.png&quot;), plot = plots.list[[i]])
+    #ggsave(paste0(varName, &quot;.png&quot;), plot = plots.list[[i]])
 
   
-}</code></pre>
-<pre><code>## Saving 7 x 5 in image
-## Saving 7 x 5 in image
-## Saving 7 x 5 in image
-## Saving 7 x 5 in image
-## Saving 7 x 5 in image
-## Saving 7 x 5 in image</code></pre>
-<pre class="r"><code>plots.list2=list()
+}
+
+plots.list2=list()
 
 #dataset with continuous variables and LOW
 data_cont=subset(lowbwt, select=c( &quot;AGE&quot;, &quot;LWT&quot;,&quot;LOW&quot;))
@@ -375,12 +370,13 @@ for( i in 1:2)
 
     plots.list2[[i]]=plotVar+geom_jitter()
   
- ggsave(paste0(varName, &quot;.png&quot;), plot = plots.list2[[i]])
+ #ggsave(paste0(varName, &quot;.png&quot;), plot = plots.list2[[i]])
   
-}</code></pre>
-<pre><code>## Saving 7 x 5 in image
-## Saving 7 x 5 in image</code></pre>
-<pre class="r"><code>  #interaction PTL and UI
+}
+
+
+  
+  #interaction PTL and UI
    plotVar = ggplot(lowbwt, aes_string(x = &quot;PTL&quot;, y = &quot;BWT&quot;)) +
         geom_boxplot(colour = lines, fill = fill,
                      size = 1) +
@@ -397,9 +393,11 @@ for( i in 1:2)
               axis.text.x = element_text(colour=&quot;black&quot;, size = 11),
               axis.text.y = element_text(colour=&quot;black&quot;, size = 9),
               axis.line = element_line(size=0.5, colour = &quot;black&quot;)) +facet_wrap(~UI)+geom_jitter()
-          ggsave(&quot;PtlUi.png&quot;, plot = plotVar)</code></pre>
-<pre><code>## Saving 7 x 5 in image</code></pre>
-<pre class="r"><code>  #interaction between AGE and FTV  
+          #ggsave(&quot;PtlUi.png&quot;, plot = plotVar)
+   
+
+
+  #interaction between AGE and FTV  
   plotVar = ggplot(lowbwt, aes_string(x = &quot;LOW&quot;, y = &quot;AGE&quot;)) +
         geom_boxplot(colour = lines, fill = fill,
                      size = 1) +
@@ -416,9 +414,10 @@ for( i in 1:2)
               axis.text.x = element_text(colour=&quot;black&quot;, size = 11),
               axis.text.y = element_text(colour=&quot;black&quot;, size = 9),
               axis.line = element_line(size=0.5, colour = &quot;black&quot;)) +facet_wrap(~FTV)+geom_jitter()
- ggsave(&quot;AgeFtv.png&quot;, plot = plotVar) </code></pre>
-<pre><code>## Saving 7 x 5 in image</code></pre>
-<pre class="r"><code>  #interaction LWT and FTV
+ # ggsave(&quot;AgeFtv.png&quot;, plot = plotVar) 
+ 
+  
+  #interaction LWT and FTV
    plotVar = ggplot(lowbwt, aes_string(x = &quot;LOW&quot;, y = &quot;LWT&quot;)) +
         geom_boxplot(colour = lines, fill = fill,
                      size = 1) +
@@ -437,9 +436,30 @@ for( i in 1:2)
               axis.text.x = element_text(colour=&quot;black&quot;, size = 11),
               axis.text.y = element_text(colour=&quot;black&quot;, size = 9),
               axis.line = element_line(size=0.5, colour = &quot;black&quot;)) +facet_wrap(~FTV)+geom_jitter()
-  ggsave(&quot;LwtFtv.png&quot;, plot = plotVar)</code></pre>
-<pre><code>## Saving 7 x 5 in image</code></pre>
-<pre class="r"><code>#interaction plot between PTL and UI
+ # ggsave(&quot;LwtFtv.png&quot;, plot = plotVar)
+
+   #interaction between Age and Smoke
+   PlotVar=ggplot(lowbwt, aes(AGE,BWT, color=as.factor(SMOKE))) + 
+  geom_point() + 
+  geom_smooth(se=F, size=1.7) +
+  ggtitle(&quot;Distribution for BWT by Age \n for Smokers and Non-Smokers&quot; ) +
+  theme_bw() +
+  labs(color='SMOKE') +
+  scale_color_manual(values=c(&quot;#74a9cf&quot;, &quot;#045a8d&quot;))+
+  theme(panel.grid.major = element_line(colour = &quot;#d3d3d3&quot;),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank(),
+        plot.title = element_text(size = 12, family = &quot;Tahoma&quot;, face = &quot;bold&quot;, hjust=0.5),
+        text=element_text(family = &quot;Tahoma&quot;),
+        axis.title = element_text(face=&quot;bold&quot;),
+        legend.title = element_text(face=&quot;bold&quot;),
+        axis.text.x = element_text(colour=&quot;black&quot;, size = 11),
+        axis.text.y = element_text(colour=&quot;black&quot;, size = 9),
+        axis.line = element_line(size=0.5, colour = &quot;black&quot;)) 
+   #ggsave(&quot;AgevsSmoke_Magda.png&quot;, plot = plotVar)
+   
+#interaction plot between PTL and UI
 interaction.plot(lowbwt$UI, lowbwt$PTL, lowbwt$BWT, 
                  col = c( &quot;#bdc9e1&quot;, &quot;#74a9cf&quot;, &quot;#2b8cbe&quot;, &quot;#045a8d&quot;), lty = 1, lwd = 3,
                  main = &quot;Distribution For BWT By UI Status \n For Each PTL Count&quot;,
@@ -1039,8 +1059,8 @@ summary(allInt_mod)</code></pre>
 ## 
 ## Number of Fisher Scoring iterations: 6</code></pre>
 </div>
-<div id="try-to-merge-groups-2-and-3-in-race" class="section level1">
-<h1>Try to merge groups 2 and 3 in RACE</h1>
+<div id="merging-groups-2-and-3-in-race" class="section level2">
+<h2>Merging groups 2 and 3 in RACE</h2>
 <pre class="r"><code>#Replace 3 with 2 in RACE
 lowbwt$RACE[which(lowbwt$RACE==&quot;3&quot;)]=&quot;2&quot;
 
