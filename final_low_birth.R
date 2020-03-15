@@ -57,7 +57,7 @@ round(correlations.df,3)
 
 ##Plots
 
-ill <- "#4271AE"
+fill <- "#4271AE"
 lines <- "#1F3552"
 
 plots.list=list()
@@ -92,7 +92,7 @@ for( i in 1:6)
   plots.list[[i]]=plotVar+geom_jitter()
   
   #Save boxplots as png 
-  #ggsave(paste0(varName, ".png"), plot = plots.list[[i]])
+ggsave(paste0(varName, ".png"), plot = plots.list[[i]])
   
   
 }
@@ -126,7 +126,7 @@ for( i in 1:2)
   
   plots.list2[[i]]=plotVar+geom_jitter()
   
-  #ggsave(paste0(varName, ".png"), plot = plots.list2[[i]])
+ggsave(paste0(varName, ".png"), plot = plots.list2[[i]])
   
 }
 
@@ -149,7 +149,7 @@ plotVar = ggplot(lowbwt, aes_string(x = "PTL", y = "BWT")) +
         axis.text.x = element_text(colour="black", size = 11),
         axis.text.y = element_text(colour="black", size = 9),
         axis.line = element_line(size=0.5, colour = "black")) +facet_wrap(~UI)+geom_jitter()
-#ggsave("PtlUi.png", plot = plotVar)
+ggsave("PtlUi.png", plot = plotVar)
 
 
 
@@ -170,7 +170,7 @@ plotVar = ggplot(lowbwt, aes_string(x = "LOW", y = "AGE")) +
         axis.text.x = element_text(colour="black", size = 11),
         axis.text.y = element_text(colour="black", size = 9),
         axis.line = element_line(size=0.5, colour = "black")) +facet_wrap(~FTV)+geom_jitter()
-# ggsave("AgeFtv.png", plot = plotVar) 
+ggsave("AgeFtv.png", plot = plotVar) 
 
 
 #interaction LWT and FTV
@@ -190,7 +190,7 @@ plotVar = ggplot(lowbwt, aes_string(x = "LOW", y = "LWT")) +
         axis.text.x = element_text(colour="black", size = 11),
         axis.text.y = element_text(colour="black", size = 9),
         axis.line = element_line(size=0.5, colour = "black")) +facet_wrap(~FTV)+geom_jitter()
-# ggsave("LwtFtv.png", plot = plotVar)
+ggsave("LwtFtv.png", plot = plotVar)
 
 #interaction between Age and Smoke
 PlotVar=ggplot(lowbwt, aes(AGE,BWT, color=as.factor(SMOKE))) + 
@@ -211,7 +211,7 @@ PlotVar=ggplot(lowbwt, aes(AGE,BWT, color=as.factor(SMOKE))) +
         axis.text.x = element_text(colour="black", size = 11),
         axis.text.y = element_text(colour="black", size = 9),
         axis.line = element_line(size=0.5, colour = "black")) 
-#ggsave("AgevsSmoke_Magda.png", plot = plotVar)
+ggsave("AgevsSmoke.png", plot = plotVar)
 
 #interaction plot between PTL and UI
 interaction.plot(lowbwt$UI, lowbwt$PTL, lowbwt$BWT, 
@@ -404,12 +404,48 @@ summary(noFtvLwt)
 ####### FINAL MODELS ########
 
 # four variables 
-final_model_a1=glm(LOW~AGE+FTV+LWT+AGE:FTV,data=lowbwt,family=binomial(link="logit"))
+
+install.packages("ResourceSelection")
+install.packages("ROCR")
+library(ResourceSelection)
+library(ROCR)
+par(mfrow=c(1,2))
+final_model_a1=glm(LOW~AGE+FTV+LWT+AGE*FTV,data=lowbwt,family=binomial(link="logit"))
 summary(final_model_a1)
 exp(final_model_a1$coefficients)
+hoslem<-hoslem.test(lowbwt$LOW,fitted(final_model_a1))
+hoslem
+
+predict<-fitted(final_model_a1)
+pred<- prediction(predict,lowbwt$LOW)
+perf<-performance(pred,measure="tpr",x.measure="fpr")
+plot(perf,main="sensitivity vs false positive rate",colorize=TRUE, colorkey.relwidth=0.5,lwd=4.5)
+perf_auc_a1<-performance(pred,measure="auc")
+abline(0,1,lty=2)
+perf_auc_a1 #0.67
 
 # using all effects 
 
-final_model_a2=glm(LOW~AGE*FTV+PTL*UI+LWT+HT+AGE:FTV,data=lowbwt,family=binomial(link="logit"))
+final_model_a2=glm(LOW~AGE+FTV+LWT+AGE*FTV+PTL+UI+HT+PTL*UI,data=lowbwt,family=binomial(link="logit"))
 summary(final_model_a2)
 exp(final_model_a2$coefficients)
+hoslem<-hoslem.test(lowbwt$LOW,fitted(final_model_a2))
+hoslem
+
+predict<-fitted(final_model_a2)
+pred<- prediction(predict,lowbwt$LOW)
+perf<-performance(pred,measure="tpr",x.measure="fpr")
+plot(perf,main="sensitivity vs false positive rate",colorize=TRUE, colorkey.relwidth=0.5,lwd=4.5)
+perf_auc_a2<-performance(pred,measure="auc")
+abline(0,1,lty=2) 
+perf_auc_a2 #0.78
+
+install.packages("pscl")
+library(pscl)
+pR2(final_model_a1)
+pR2(final_model_a2)
+
+# anova on the final models
+anova(final_model_a1,final_model_a2,test="Chisq")
+
+
