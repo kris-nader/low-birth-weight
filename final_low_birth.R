@@ -9,7 +9,15 @@
 ## Load the required packages 
 list.of.packages <- c("ggplot2", "tidyverse","AUCcmodavg","MASS","reshape2","grid","PerformanceAnalytics")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-if(length(new.packages)) install.packages(new.packages)
+if(length(new.packages)) install.packages(new.packages) 
+library(ggplot2)
+library(tidyverse)
+library(AUCcmodavg)
+library(MASS)
+library(reshape2)
+library(grid)
+library(PerformanceAnalytics)
+
 
 ## Load dataset
 lowbwt=read.table(file=file.choose(),header=T,row.names = 1)
@@ -28,24 +36,24 @@ xtabs(~LOW, data = lowbwt)
 
 # Correlation between continuous variables and BWT
 chart.Correlation(subset(lowbwt,select=c("BWT","AGE","LWT","FTV", "PTL")),
-                  histogram=TRUE, pch=19, method = "spearman")
+                  histogram=TRUE, pch=19, method = "spearman",exact = FALSE)
 
-p_age <- cor.test(lowbwt$BWT, lowbwt$AGE, method="spearman")$p.value
-p_lwt <- cor.test(lowbwt$BWT, lowbwt$LWT, method="spearman")$p.value
-p_ftv <- cor.test(lowbwt$BWT, lowbwt$FTV, method="spearman")$p.value
-p_ptl <- cor.test(lowbwt$BWT, lowbwt$PTL, method="spearman")$p.value
+p_age <- cor.test(lowbwt$BWT, lowbwt$AGE, method="spearman",exact = FALSE)$p.value
+p_lwt <- cor.test(lowbwt$BWT, lowbwt$LWT, method="spearman",exact = FALSE)$p.value
+p_ftv <- cor.test(lowbwt$BWT, lowbwt$FTV, method="spearman",exact = FALSE)$p.value
+p_ptl <- cor.test(lowbwt$BWT, lowbwt$PTL, method="spearman",exact = FALSE)$p.value
 
-rho_age <- cor.test(lowbwt$BWT, lowbwt$AGE, method="spearman")$estimate
-rho_lwt <- cor.test(lowbwt$BWT, lowbwt$LWT, method="spearman")$estimate
-rho_ftv <- cor.test(lowbwt$BWT, lowbwt$FTV, method="spearman")$estimate
-rho_ptl <- cor.test(lowbwt$BWT, lowbwt$PTL, method="spearman")$estimate
+rho_age <- cor.test(lowbwt$BWT, lowbwt$AGE, method="spearman",exact = FALSE)$estimate
+rho_lwt <- cor.test(lowbwt$BWT, lowbwt$LWT, method="spearman",exact = FALSE)$estimate
+rho_ftv <- cor.test(lowbwt$BWT, lowbwt$FTV, method="spearman",exact = FALSE)$estimate
+rho_ptl <- cor.test(lowbwt$BWT, lowbwt$PTL, method="spearman",exact = FALSE)$estimate
 
 correlations.df <- data.frame(c(rho_age, rho_lwt, rho_ftv, rho_ptl),
                               c(p_age, p_lwt, p_ftv, p_ptl), 
                               row.names=c("AGE", "LWT", "FTV", "PTL"))
-round(2)
+
 colnames(correlations.df) <- c("rho", "p")
-correlations.df
+round(correlations.df,3)
 
 ##Plots
 
@@ -65,7 +73,6 @@ for( i in 1:6)
   
   temp=data_cat[,c(i,7)]
   temp[,1]=as.factor(temp[,1])
-  
   plotVar = ggplot(temp, aes_string(x = varName, y = "BWT")) +
     geom_boxplot(colour = lines, fill = fill, size = 1) +
     scale_y_continuous(name = "Birth Weight")+
@@ -98,10 +105,8 @@ data_cont=subset(lowbwt, select=c( "AGE", "LWT","LOW"))
 for( i in 1:2)
 {
   varName=colnames(data_cont)[i]
-  
   temp=data_cont[,c(i,3)]
   temp[,2]=as.factor(temp[,2])
-  
   plotVar = ggplot(temp, aes_string(x = "LOW", y = varName)) +
     geom_boxplot(colour = lines, fill = fill,
                  size = 1) +
@@ -173,8 +178,6 @@ plotVar = ggplot(lowbwt, aes_string(x = "LOW", y = "LWT")) +
   geom_boxplot(colour = lines, fill = fill,
                size = 1) +
   scale_y_continuous(name = "LWT")+
-  #breaks = seq(0, 175, 25),
-  #limits=c(0, 175)) +
   scale_x_discrete(name = "LOW") +
   ggtitle("Distribution of LWT by LOW foreach FTV Count") +
   theme_bw() +
@@ -276,7 +279,6 @@ summary(model4)
 model5=glm(LOW ~ AGE+FTV+PTL+LWT+UI+HT+SMOKE+AGE:FTV+PTL:UI, data=lowbwt, family=binomial(link="logit"))
 summary(model5)
 #We can leave RACE because AIC did not improve much and one category was significant
-```
 
 ## Analysis 1
 ## AIC WITH 4 VARIABLES
