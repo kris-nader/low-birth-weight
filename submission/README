@@ -14,11 +14,11 @@ James O’Reilly			r0773125@student.kuleuven.be
 
 Included in this zip file:
 
-- App_Low_Birth_Weight.R             	# a Shiny R app that uses LBW.csv for simple visualisation 						of results.
+- App_Low_Birth_Weight.R             	# a Shiny R app that uses LBW.csv for simple visualisation of results.
 
 - final_low_birth.R		     	# Final R script with plots and models.
 
-- Group1-LOW.pdf			# A report on the findings along with discussion and 						interpretation.
+- Group1-LOW.pdf			# A report on the findings along with discussion and interpretation.
 
 - LBW.csv				# Data for R shiny script
 
