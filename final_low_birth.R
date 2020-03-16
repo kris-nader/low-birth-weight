@@ -405,9 +405,8 @@ summary(noFtvLwt)
 
 # four variables 
 
-install.packages("ResourceSelection")
+
 install.packages("ROCR")
-library(ResourceSelection)
 library(ROCR)
 par(mfrow=c(1,2))
 final_model_a1=glm(LOW~AGE+FTV+LWT+AGE*FTV,data=lowbwt,family=binomial(link="logit"))
