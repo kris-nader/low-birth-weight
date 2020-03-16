@@ -413,8 +413,6 @@ par(mfrow=c(1,2))
 final_model_a1=glm(LOW~AGE+FTV+LWT+AGE*FTV,data=lowbwt,family=binomial(link="logit"))
 summary(final_model_a1)
 exp(final_model_a1$coefficients)
-hoslem<-hoslem.test(lowbwt$LOW,fitted(final_model_a1))
-hoslem
 
 predict<-fitted(final_model_a1)
 pred<- prediction(predict,lowbwt$LOW)
@@ -429,8 +427,7 @@ perf_auc_a1 #0.67
 final_model_a2=glm(LOW~AGE+FTV+LWT+AGE*FTV+PTL+UI+HT+PTL*UI,data=lowbwt,family=binomial(link="logit"))
 summary(final_model_a2)
 exp(final_model_a2$coefficients)
-hoslem<-hoslem.test(lowbwt$LOW,fitted(final_model_a2))
-hoslem
+
 
 predict<-fitted(final_model_a2)
 pred<- prediction(predict,lowbwt$LOW)
@@ -440,10 +437,7 @@ perf_auc_a2<-performance(pred,measure="auc")
 abline(0,1,lty=2) 
 perf_auc_a2 #0.78
 
-install.packages("pscl")
-library(pscl)
-pR2(final_model_a1)
-pR2(final_model_a2)
+
 
 # anova on the final models
 anova(final_model_a1,final_model_a2,test="Chisq")
