@@ -193,7 +193,7 @@ plotVar = ggplot(lowbwt, aes_string(x = "LOW", y = "LWT")) +
 ggsave("LwtFtv.png", plot = plotVar)
 
 #interaction between Age and Smoke
-PlotVar=ggplot(lowbwt, aes(AGE,BWT, color=as.factor(SMOKE))) + 
+plotVar=ggplot(lowbwt, aes(AGE,BWT, color=as.factor(SMOKE))) + 
   geom_point() + 
   geom_smooth(se=F, size=1.7) +
   ggtitle("Distribution for BWT by Age \n for Smokers and Non-Smokers" ) +
