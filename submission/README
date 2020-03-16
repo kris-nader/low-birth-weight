@@ -1,0 +1,25 @@
+---------------------------------------
+Group: Low Birth Weight Logistic Regression
+
+Members:
+Aditya Badola 			r0768685@student.kuleuven.be
+Danie Daaboul 			r0775655@student.kuleuven.be
+Kristen Michelle Nader 		r0771801@student.kuleuven.be
+Matthew Watson 			r0766802@student.kuleuven.be
+Prabhat Juyal 			r0772775@student.kuleuven.be
+Magdalena Zielonka		r0769926@student.kuleuven.be
+Michael Neilson 		r0770285@student.kuleuven.be
+James O’Reilly			r0773125@student.kuleuven.be
+
+
+Included in this zip file:
+
+- App_Low_Birth_Weight.R             	# a Shiny R app that uses LBW.csv for simple visualisation 						of results.
+
+- final_low_birth.R		     	# Final R script with plots and models.
+
+- Group1-LOW.pdf			# A report on the findings along with discussion and 						interpretation.
+
+- LBW.csv				# Data for R shiny script
+
+- lowbwt.dat				# Data for final_low_birth.R 
